@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="inicio.html" method="post" name="contratar_plan">
+        <div style="text-align: center;">
+            <span style="font-family: Arial;">Selecciona un plan:<br>
+                <label><input type="radio" name="plan" value="estandar_anuncios">Estandar con anuncios</label>
+                <br>
+                <label><input type="radio" name="plan" value="basico">Basico</label>
+                <br>
+                <label><input type="radio" name="plan" value="estandar" checked>Estandar</label>
+                <br>
+                <label><input type="radio" name="plan" value="premium">Premium</label>
+                <br>
+                <input type="submit" value="Contratar">
+            </span>
+        </div>
+    </form>
+    <br><br>
+    <form action="inicio.html" method="post" name="compartir_plan">
+        <div style="text-align: center;"><span style="font-family: Arial;">
+            <label>
+                Nombre del usuario con quien compartir<br>
+                <input type="text" name="usuario_compartir">                
+            </label>
+            <br>
+            <input type="submit" value="Compartir Plan">
+        </span></div>
+    </form>
+</body>
+</html>
