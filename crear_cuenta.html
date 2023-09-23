@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de usuario</title>
+</head>
+<body>
+  <h1>Registro de usuario</h1>
+
+  <form action="index.html" method="post">
+    <fieldset>
+        <legend>Informacion de la cuenta</legend>
+        <label for="nombre">Ingrese el nombre real del titular de la cuenta:</label>
+        <input type="text" name="nombre" placeholder="Nombre real"><br>
+        <label for="email">Ingrese su correo electronico:</label>
+        <input type="email" name="correo" placeholder="Correo electrónico"><br>
+        <label for="contrasena">Ingrese una contraseña:</label>
+        <input type="password" name="contrasena" placeholder="Contraseña">
+        <label for="contrasena2">Ingrese de nuevo la contraseña:</label>
+        <input type="password" name="contrasena2" placeholder="Repetir contraseña"><br>
+    </fieldset>
+      
+    <fieldset>
+        <legend>Detalles de suscripcion</legend>
+        <label for="plan">Elija un plan de suscripcion:</label>
+        <select id="plan" name="plan">
+            <option value="Basico">Basico</option>
+            <option value="Estandar con anuncios">Estandar con anuncios</option>
+            <option value="Estandar">Estandar</option>
+            <option value="Premium">Premium</option>
+        </select><br>
+    </fieldset>>
+    <input type="submit" value="Registrarse">
+  </form>
+</body>
+</html>

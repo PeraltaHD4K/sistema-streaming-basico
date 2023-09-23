@@ -2,35 +2,23 @@ DROP DATABASE IF EXISTS streaming_system;
 CREATE DATABASE streaming_system;
 USE streaming_system;
 
+
+CREATE TABLE cuenta (
+  id_cuenta INTEGER NOT NULL AUTO_INCREMENT,
+  propietario CHAR(128) DEFAULT NULL,
+  plan CHAR(64) NOT NULL,
+  correo CHAR(128) NOT NULL,
+  contrasena CHAR(128) NOT NULL,
+  PRIMARY KEY(id_cuenta)
+);
+
 CREATE TABLE usuario (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    nombre_usuario VARCHAR(255) NOT NULL UNIQUE,
-    correo VARCHAR(255) NOT NULL UNIQUE,
-    contrasena VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE plan (
-    id_plan INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    detalles VARCHAR(255) NOT NULL,
-    limite_compartir INT NOT NULL
-);
-
-CREATE TABLE contrato (
-    id_contrato INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT NOT NULL,
-    id_plan INT NOT NULL,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
-    FOREIGN KEY (id_plan) REFERENCES plan(id_plan)
-);
-
-CREATE TABLE comparticion (
-    id_comparticion INT AUTO_INCREMENT PRIMARY KEY,
-    id_contrato INT NOT NULL,
-    id_usuario_compartido INT NOT NULL,
-    FOREIGN KEY (id_contrato) REFERENCES contrato(id_contrato),
-    FOREIGN KEY (id_usuario_compartido) REFERENCES usuario(id_usuario)
+    id_usuario INTEGER NOT NULL AUTO_INCREMENT,
+    id_cuenta INTEGER NOT NULL,
+    nombre CHAR(128) DEFAULT NULL,
+    edad SMALLINT(2) DEFAULT NULL,
+    PRIMARY KEY(id_usuario),
+    FOREIGN KEY(id_cuenta) REFERENCES cuenta(id_cuenta) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE categoria (
