@@ -3,22 +3,33 @@ CREATE DATABASE streaming_system;
 USE streaming_system;
 
 
-CREATE TABLE cuenta (
-  id_cuenta INTEGER NOT NULL AUTO_INCREMENT,
-  propietario CHAR(128) DEFAULT NULL,
-  plan CHAR(64) NOT NULL,
-  correo CHAR(128) NOT NULL,
-  contrasena CHAR(128) NOT NULL,
-  PRIMARY KEY(id_cuenta)
+CREATE TABLE detalles_plan (
+    id_plan INTEGER NOT NULL AUTO_INCREMENT,
+    nombre CHAR(128) NOT NULL,
+    descripcion CHAR(255) NOT NULL,
+    precio INT NOT NULL,
+    PRIMARY KEY(id_plan)
 );
 
 CREATE TABLE usuario (
-    id_usuario INTEGER NOT NULL AUTO_INCREMENT,
-    id_cuenta INTEGER NOT NULL,
-    nombre CHAR(128) DEFAULT NULL,
+  id_usuario INTEGER NOT NULL AUTO_INCREMENT,
+  nombre CHAR(128)  NOT NULL,
+  apellido_paterno CHAR(128) NOT NULL,
+  apellido_materno CHAR(128) DEFAULT NULL,
+  correo CHAR(128) NOT NULL,
+  contrasena CHAR(128) NOT NULL,
+  id_plan INTEGER NOT NULL,
+  PRIMARY KEY(id_usuario),
+  FOREIGN KEY(id_plan) REFERENCES detalles_plan(id_plan) ON DELETE RESTRICT
+);
+
+CREATE TABLE perfil (
+    id_perfil INTEGER NOT NULL AUTO_INCREMENT,
+    id_usuario INTEGER NOT NULL,
+    username CHAR(64) DEFAULT NULL,
     edad SMALLINT(2) DEFAULT NULL,
-    PRIMARY KEY(id_usuario),
-    FOREIGN KEY(id_cuenta) REFERENCES cuenta(id_cuenta) ON DELETE CASCADE ON UPDATE CASCADE
+    PRIMARY KEY(id_perfil),
+    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE categoria (
@@ -27,17 +38,20 @@ CREATE TABLE categoria (
     PRIMARY KEY(id_categoria)
 );
 
-
 CREATE TABLE contenido (
     id_contenido INTEGER NOT NULL AUTO_INCREMENT,
-    id_categoria INTEGER NOT NULL,
     titulo CHAR(255) DEFAULT NULL,
     tipo CHAR(16) DEFAULT NULL,
     clasificacion CHAR(8) DEFAULT NULL,
-    PRIMARY KEY(id_contenido),
-    FOREIGN KEY(id_categoria) REFERENCES categoria(id_categoria) ON DELETE NO ACTION
+    PRIMARY KEY(id_contenido)
 );
 
+CREATE TABLE categorias_contenido (
+    id_categoria INTEGER NOT NULL,
+    id_contenido INTEGER NOT NULL,
+    FOREIGN KEY(id_categoria) REFERENCES categoria(id_categoria) ON DELETE RESTRICT,
+    FOREIGN KEY(id_contenido) REFERENCES contenido(id_contenido) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 CREATE TABLE resena (
     id_resena INT NOT NULL AUTO_INCREMENT,
@@ -47,20 +61,21 @@ CREATE TABLE resena (
 );
 
 CREATE TABLE interaccion(
-    id_interaccion INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario INTEGER NOT NULL,
-    id_resena INT,
+    id_interaccion INTEGER AUTO_INCREMENT,    
+    id_perfil INTEGER NOT NULL,
+    id_resena INTEGER DEFAULT NULL,
     id_contenido INTEGER NOT NULL,
-    fecha_interaccion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(id_interaccion),
+    FOREIGN KEY(id_perfil) REFERENCES perfil(id_perfil) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY(id_resena) REFERENCES resena(id_resena) ON DELETE SET NULL,
-    FOREIGN KEY(id_contenido) REFERENCES contenido(id_contenido) 
+    FOREIGN KEY(id_contenido) REFERENCES contenido(id_contenido)
 );
 
 CREATE TABLE pelicula (
     id_pelicula INTEGER NOT NULL AUTO_INCREMENT,
     id_contenido INTEGER NOT NULL,
-    duracion SMALLINT(3) DEFAULT NULL,
+    duracion_mins SMALLINT(3) DEFAULT NULL,
     PRIMARY KEY(id_pelicula),
     FOREIGN KEY(id_contenido) REFERENCES contenido(id_contenido) ON DELETE RESTRICT
 );
@@ -68,8 +83,8 @@ CREATE TABLE pelicula (
 CREATE TABLE serie (
     id_serie INTEGER NOT NULL AUTO_INCREMENT,
     id_contenido INTEGER NOT NULL,
-    temporadas SMALLINT(3) DEFAULT NULL,
-    capitulos SMALLINT(4) DEFAULT NULL,
+    num_temporadas SMALLINT(3) DEFAULT NULL,
+    num_capitulos SMALLINT(4) DEFAULT NULL,
     PRIMARY KEY(id_serie),
     FOREIGN KEY(id_contenido) REFERENCES contenido(id_contenido) ON DELETE RESTRICT
 );
@@ -82,87 +97,216 @@ INSERT INTO categoria(nombre) VALUES('Comedia');
 INSERT INTO categoria(nombre) VALUES('Historico');
 INSERT INTO categoria(nombre) VALUES('Crimen');
 INSERT INTO categoria(nombre) VALUES('Medico');
+INSERT INTO categoria(nombre) VALUES('Romantico');
+INSERT INTO categoria(nombre) VALUES('Melodrama');
+INSERT INTO categoria(nombre) VALUES('Aventura');
+INSERT INTO categoria(nombre) VALUES('Tragedia');
+INSERT INTO categoria(nombre) VALUES('Terror');
+INSERT INTO categoria(nombre) VALUES('Anime');
 
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Titanic', 'Pelicula', 'PG-13' FROM categoria WHERE nombre='Drama';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Matrix', 'Pelicula', 'M' FROM categoria WHERE nombre='Accion';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Interstellar', 'Pelicula', 'PG-13' FROM categoria WHERE nombre='Ciencia ficcion';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Better call Saul', 'Serie', 'M' FROM categoria WHERE nombre='Crimen';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Chernobyl', 'Serie', 'M' FROM categoria WHERE nombre='Historico';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Game of Thrones', 'Serie', 'Ao' FROM categoria WHERE nombre='Accion';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Stranger Things', 'Serie', 'T' FROM categoria WHERE nombre='Ciencia ficcion';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'The Office', 'Serie', 'PG-13' FROM categoria WHERE nombre='Comedia';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Oppenheimer', 'Pelicula', 'Ao' FROM categoria WHERE nombre='Historico';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Wall-e', 'Pelicula', 'E' FROM categoria WHERE nombre='Ciencia ficcion';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Friends', 'Serie', 'T' FROM categoria WHERE nombre='Comedia';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Black mirror', 'Serie', 'M' FROM categoria WHERE nombre='Ciencia ficcion';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Joker', 'Pelicula', 'M' FROM categoria WHERE nombre='Drama';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Pulp fiction', 'Pelicula', 'Ao' FROM categoria WHERE nombre='Crimen';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Terminator', 'Pelicula', 'T' FROM categoria WHERE nombre='Accion';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Back to the future', 'Pelicula', 'E' FROM categoria WHERE nombre='Ciencia ficcion';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Dr. House', 'Serie', 'T' FROM categoria WHERE nombre='Medico';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Breaking bad', 'Serie', 'M' FROM categoria WHERE nombre='Crimen';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Hunter x Hunter', 'Serie', 'PG-13' FROM categoria WHERE nombre='Accion';
-INSERT INTO contenido(id_categoria, titulo, tipo, clasificacion) SELECT id_categoria, 'Whiplash', 'Pelicula', 'PG' FROM categoria WHERE nombre='Drama';
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Titanic', 'Pelicula', 'PG-13');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Matrix', 'Pelicula', 'M');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Interstellar', 'Pelicula', 'PG-13');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Better call Saul', 'Serie', 'M');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Chernobyl', 'Serie', 'M');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Game of Thrones', 'Serie', 'Ao');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Stranger Things', 'Serie', 'T'); 
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('The Office', 'Serie', 'PG-13');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Oppenheimer', 'Pelicula', 'Ao');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Wall-e', 'Pelicula', 'E');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Friends', 'Serie', 'T');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Black mirror', 'Serie', 'M');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Joker', 'Pelicula', 'M');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Pulp fiction', 'Pelicula', 'Ao');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Terminator', 'Pelicula', 'T');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Back to the future', 'Pelicula', 'E');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Dr. House', 'Serie', 'T');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Breaking bad', 'Serie', 'M');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Hunter x Hunter', 'Serie', 'PG-13');
+INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Whiplash', 'Pelicula', 'PG');
 
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 194 FROM contenido WHERE titulo = 'Titanic';
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 136 FROM contenido WHERE titulo = 'Matrix';
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 169 FROM contenido WHERE titulo = 'Interstellar';
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 180 FROM contenido WHERE titulo = 'Oppenheimer';
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 98 FROM contenido WHERE titulo = 'Wall-e';
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 122 FROM contenido WHERE titulo = 'Joker';
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 154 FROM contenido WHERE titulo = 'Pulp Fiction';
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Terminator';
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 116 FROM contenido WHERE titulo = 'Back to the future';
-INSERT INTO pelicula (id_contenido, duracion) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Whiplash';
+INSERT INTO categorias_contenido (id_categoria, id_contenido) VALUES
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Titanic')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Romantico'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Titanic')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Melodrama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Titanic')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Tragedia'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Titanic')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Accion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Matrix')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Ciencia ficcion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Matrix')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Aventura'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Matrix')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Ciencia ficcion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Interstellar')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Interstellar')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Crimen'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Better call Saul')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Better call Saul')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Tragedia'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Better call Saul')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Historico'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Chernobyl')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Tragedia'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Chernobyl')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Chernobyl')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Accion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Game of Thrones')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Aventura'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Game of Thrones')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Ciencia ficcion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Stranger Things')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Terror'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Stranger Things')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Stranger Things')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Comedia'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'The Office')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Historico'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Oppenheimer')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Oppenheimer')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Ciencia ficcion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Wall-e')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Comedia'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Wall-e')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Comedia'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Friends')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Romantico'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Friends')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Ciencia ficcion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Black mirror')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Black mirror')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Joker')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Crimen'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Joker')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Crimen'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Pulp fiction')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Pulp fiction')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Accion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Pulp fiction')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Accion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Terminator')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Ciencia ficcion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Terminator')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Aventura'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Terminator')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Ciencia ficcion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Back to the future')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Aventura'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Back to the future')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Medico'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Dr. House')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Dr. House')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Breaking bad')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Crimen'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Breaking bad')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Tragedia'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Breaking bad')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Accion'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Hunter x Hunter')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Aventura'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Hunter x Hunter')),
+	((SELECT id_categoria FROM categoria WHERE nombre = 'Anime'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Hunter x Hunter')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Whiplash'));
 
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 6, 63 FROM contenido WHERE titulo = 'Better Call Saul';
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 1, 5 FROM contenido WHERE titulo = 'Chernobyl';
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 8, 73 FROM contenido WHERE titulo = 'Game of Thrones';
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 4, 34 FROM contenido WHERE titulo = 'Stranger Things';
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 9, 201 FROM contenido WHERE titulo = 'The Office';
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 10, 236 FROM contenido WHERE titulo = 'Friends';
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 6, 27 FROM contenido WHERE titulo = 'Black mirror';
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 8, 177 FROM contenido WHERE titulo = 'Dr. House';
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 5, 62 FROM contenido WHERE titulo = 'Breaking bad';
-INSERT INTO serie (id_contenido, temporadas, capitulos) SELECT id_contenido, 5, 148 FROM contenido WHERE titulo = 'Hunter x Hunter';
 
-INSERT INTO cuenta (propietario, plan, correo) VALUES
-    ('Juan Perez', 'Estandar con anuncios', 'juanperez123@gmail.com'),
-    ('Maria Rodriguez', 'Basico', 'maria.rodriguez45@hotmail.com'),
-    ('Luis Gonzalez', 'Estandar', 'luis.gonzalez56@gmail.com'),
-    ('Ana Martinez', 'Premium', 'ana.martinez12@outlook.com'),
-    ('Pedro Garcia', 'Estandar con anuncios', 'pedro.garcia89@hotmail.com'),
-    ('Laura Lopez', 'Basico', 'laura.lopez34@gmail.com'),
-    ('Carlos Sanchez', 'Estandar', 'carlos.sanchez67@hotmail.com'),
-    ('Sofia Diaz', 'Premium', 'sofia.diaz78@outlook.com'),
-    ('Diego Torres', 'Estandar con anuncios', 'diego.torres90@gmail.com'),
-    ('Isabella Ramirez', 'Basico', 'isabella.ramirez12@hotmail.com'),
-    ('Andres Fernandez', 'Estandar', 'andres.fernandez34@gmail.com'),
-    ('Valentina Herrera', 'Premium', 'valentina.herrera56@outlook.com'),
-    ('Mateo Castro', 'Estandar con anuncios', 'mateo.castro78@gmail.com'),
-    ('Camila Gonzalez', 'Basico', 'camila.gonzalez90@hotmail.com'),
-    ('Javier Silva', 'Estandar', 'javier.silva12@gmail.com'),
-    ('Mariana Rios', 'Premium', 'mariana.rios34@outlook.com'),
-    ('Daniel Paredes', 'Estandar con anuncios', 'daniel.paredes56@gmail.com'),
-    ('Lucia Torres', 'Basico', 'lucia.torres67@hotmail.com'),
-    ('Eduardo Mendoza', 'Estandar', 'eduardo.mendoza12@gmail.com'),
-    ('Valeria Navarro', 'Premium', 'valeria.navarro34@outlook.com');
 
-INSERT INTO usuario (id_cuenta, nombre, edad) 
-    SELECT id_cuenta, propietario, 24 FROM cuenta;
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 194 FROM contenido WHERE titulo = 'Titanic';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 136 FROM contenido WHERE titulo = 'Matrix';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 169 FROM contenido WHERE titulo = 'Interstellar';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 180 FROM contenido WHERE titulo = 'Oppenheimer';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 98 FROM contenido WHERE titulo = 'Wall-e';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 122 FROM contenido WHERE titulo = 'Joker';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 154 FROM contenido WHERE titulo = 'Pulp Fiction';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Terminator';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 116 FROM contenido WHERE titulo = 'Back to the future';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Whiplash';
 
-INSERT INTO usuario (id_cuenta, nombre, edad)
-    SELECT id_cuenta, 'Juan Hernandez', 25 FROM cuenta WHERE propietario = 'Ana Martinez';
-INSERT INTO usuario (id_cuenta, nombre, edad)
-    SELECT id_cuenta, 'Mauricio Flores', 19 FROM cuenta WHERE propietario = 'Ana Martinez';
-INSERT INTO usuario (id_cuenta, nombre, edad)
-    SELECT id_cuenta, 'Alberto Miranda', 30 FROM cuenta WHERE propietario = 'Ana Martinez';
-INSERT INTO usuario (id_cuenta, nombre, edad)
-    SELECT id_cuenta, 'Guadalupe Hernandez', 35 FROM cuenta WHERE propietario = 'Sofia Diaz';
-INSERT INTO usuario (id_cuenta, nombre, edad)
-    SELECT id_cuenta, 'Antonio Rojas', 16 FROM cuenta WHERE propietario = 'Sofia Diaz';
-INSERT INTO usuario (id_cuenta, nombre, edad)
-    SELECT id_cuenta, 'Sebastin Sandoval', 23 FROM cuenta WHERE propietario = 'Sofia Diaz';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 6, 63 FROM contenido WHERE titulo = 'Better Call Saul';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 1, 5 FROM contenido WHERE titulo = 'Chernobyl';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 8, 73 FROM contenido WHERE titulo = 'Game of Thrones';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 4, 34 FROM contenido WHERE titulo = 'Stranger Things';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 9, 201 FROM contenido WHERE titulo = 'The Office';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 10, 236 FROM contenido WHERE titulo = 'Friends';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 6, 27 FROM contenido WHERE titulo = 'Black mirror';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 8, 177 FROM contenido WHERE titulo = 'Dr. House';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 5, 62 FROM contenido WHERE titulo = 'Breaking bad';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 5, 148 FROM contenido WHERE titulo = 'Hunter x Hunter';
+
+INSERT INTO detalles_plan (nombre, descripcion, precio) VALUES
+    ('Estandar con anuncios', 'Con anuncios, todas las peliculas y series excepto unas pocas, hasta dos pantallas a la vez, FullHD', 99),
+    ('Basico', 'Peliculas y series ilimitadas sin anuncios, 1 pantalla a la vez, HD, descarga en 1 dispositivo a la vez', 139),
+    ('Estandar', 'Peliculas y series ilimitadas sin anuncios, 2 pantalla a la vez, FullHD, descarga en 2 dispositivo a la vez, agregar 1 perfil adicional que no viva contigo', 219),
+    ('Premium', 'Peliculas y series ilimitadas sin anuncios, 4 pantalla a la vez, UltraHD, descarga en 6 dispositivo a la vez, agregar 2 perfiles adicionales que no vivan contigo',299);
+
+
+INSERT INTO usuario (nombre, apellido_paterno, apellido_materno, correo, contrasena, id_plan) VALUES
+    ('Juan', 'Gomez', 'Lopez', 'juan@gmail.com', 'juan1234', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
+    ('Andrea', 'Martinez', 'Perez', 'andrea@hotmail.com', 'andrea567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar con anuncios')),
+    ('Miguel', 'Hernandez', 'Rodriguez', 'miguel@gmail.com', 'miguel890', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar')),
+    ('Laura', 'Lopez', 'Fernandez', 'laura@hotmail.com', 'laura123', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
+    ('Daniel', 'Perez', 'Gonzalez', 'daniel@gmail.com', 'daniel567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar')),
+    ('Carla', 'Rodriguez', 'Morales', 'carla@hotmail.com', 'carla890', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
+    ('Diego', 'Fernandez', 'Diaz', 'diego@gmail.com', 'diego1234', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar')),
+    ('Sofia', 'Gonzalez', 'Ruiz', 'sofia@hotmail.com', 'sofia567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar')),
+    ('Pablo', 'Morales', 'Alvarez', 'pablo@gmail.com', 'pablo890', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Premium')),
+    ('Valeria', 'Diaz', 'Sanchez', 'valeria@hotmail.com', 'valeria123', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar')),
+    ('Alejandro', 'Ruiz', 'Torres', 'alejandro@gmail.com', 'alejandro567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
+    ('Fernanda', 'Alvarez', 'Ramirez', 'fernanda@hotmail.com', 'fernanda890', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
+    ('Luisa', 'Sanchez', 'Vargas', 'luisa@gmail.com', 'luisa1234', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
+    ('Carlos', 'Torres', 'Castro', 'carlos@hotmail.com', 'carlos567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar')),
+    ('Ana', 'Ramirez', 'Juarez', 'ana@gmail.com', 'ana890', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Premium')),
+    ('David', 'Vargas', 'Navarro', 'david@hotmail.com', 'david123', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
+    ('Elena', 'Castro', 'Soto', 'elena@gmail.com', 'elena567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
+    ('Ricardo', 'Juarez', 'Martinez', 'ricardo@hotmail.com', 'ricardo890', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Premium')),
+    ('Marina', 'Navarro', 'Gomez', 'marina@gmail.com', 'marina123', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar')),
+    ('Adrian', 'Soto', 'Lopez', 'adrian@hotmail.com', 'adrian567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar'));
+
+INSERT INTO perfil (id_usuario, username, edad) VALUES 
+    ((SELECT id_usuario FROM usuario WHERE correo = 'juan@gmail.com'), 'juangomez', 28),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'andrea@hotmail.com'), 'andreamartinez', 25),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'miguel@gmail.com'), 'miguelhernandez', 29),
+	((SELECT id_usuario FROM usuario WHERE correo = 'miguel@gmail.com'), 'rodrigoperez', 18),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'laura@hotmail.com'), 'lauralopez', 24),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'daniel@gmail.com'), 'danielperez', 27),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'carla@hotmail.com'), 'carlarodriguez', 26),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'diego@gmail.com'), 'diegofernandez', 31),
+	((SELECT id_usuario FROM usuario WHERE correo = 'diego@gmail.com'), 'ernestodiaz', 24),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'sofia@hotmail.com'), 'sofiagonzalez', 30),
+	((SELECT id_usuario FROM usuario WHERE correo = 'sofia@hotmail.com'), 'luizgonzalez', 9),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'pablo@gmail.com'), 'pablomorales', 33),
+	((SELECT id_usuario FROM usuario WHERE correo = 'pablo@gmail.com'), 'paolarodriguez', 36),
+	((SELECT id_usuario FROM usuario WHERE correo = 'pablo@gmail.com'), 'miguelmorales', 14),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'valeria@hotmail.com'), 'valeriadiaz', 29),
+	((SELECT id_usuario FROM usuario WHERE correo = 'valeria@hotmail.com'), 'sofiavergara', 21),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'alejandro@gmail.com'), 'alejandroruiz', 32),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'fernanda@hotmail.com'), 'fernandaalvarez', 26),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'luisa@gmail.com'), 'luisasanchez', 28),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'carlos@hotmail.com'), 'carlostorres', 31),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'ana@gmail.com'), 'anaramirez', 35),
+	((SELECT id_usuario FROM usuario WHERE correo = 'ana@gmail.com'), 'lauragarcia', 28),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'david@hotmail.com'), 'davidvargas', 27),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'elena@gmail.com'), 'elenacastro', 28),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'ricardo@hotmail.com'), 'ricardojuarez', 34),
+	((SELECT id_usuario FROM usuario WHERE correo = 'ricardo@hotmail.com'), 'andresflores', 19),
+	((SELECT id_usuario FROM usuario WHERE correo = 'ricardo@hotmail.com'), 'juandiaz', 22),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'marina@gmail.com'), 'marinanavarro', 30),
+	((SELECT id_usuario FROM usuario WHERE correo = 'marina@gmail.com'), 'carloshernandez', 25),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'adrian@hotmail.com'), 'adriansoto', 29);
 
 INSERT INTO resena (comentario, calificacion) VALUES
     ("Muy buena", 8),
@@ -176,22 +320,22 @@ INSERT INTO resena (comentario, calificacion) VALUES
     ("No la volveria a ver", 5),
     ("Perdida de tiempo", 3);
 
-INSERT INTO interaccion (id_usuario, id_resena, id_contenido) VALUES
-    ((SELECT id_usuario FROM usuario WHERE nombre = 'Ana Martinez'),
+INSERT INTO interaccion (id_perfil, id_resena, id_contenido) VALUES
+    ((SELECT id_perfil FROM perfil WHERE username = 'miguelhernandez'),
     (SELECT id_resena FROM resena WHERE comentario = 'Muy buena'),
     (SELECT id_contenido FROM contenido WHERE titulo = 'Oppenheimer')),
-    ((SELECT id_usuario FROM usuario WHERE nombre = 'Sofia Diaz'),
+    ((SELECT id_perfil FROM perfil WHERE username = 'sofiagonzalez'),
     (SELECT id_resena FROM resena WHERE comentario = '10/10'),
     (SELECT id_contenido FROM contenido WHERE titulo = 'Oppenheimer')),
-    ((SELECT id_usuario FROM usuario WHERE nombre = 'Juan Hernandez'),
+    ((SELECT id_perfil FROM perfil WHERE username = 'diegofernandez'),
     (SELECT id_resena FROM resena WHERE comentario = 'God'),
     (SELECT id_contenido FROM contenido WHERE titulo = 'Game of Thrones')),
-    ((SELECT id_usuario FROM usuario WHERE nombre = 'Alberto Miranda'),
+    ((SELECT id_perfil FROM perfil WHERE username = 'luisasanchez'),
     (SELECT id_resena FROM resena WHERE comentario = 'La he visto 1000 veces'),
     (SELECT id_contenido FROM contenido WHERE titulo = 'Joker')),
-    ((SELECT id_usuario FROM usuario WHERE nombre = 'Guadalupe Hernandez'),
+    ((SELECT id_perfil FROM perfil WHERE username = 'davidvargas'),
     (SELECT id_resena FROM resena WHERE comentario = 'De lo mejor que he visto'),
     (SELECT id_contenido FROM contenido WHERE titulo = 'Friends')),
-    ((SELECT id_usuario FROM usuario WHERE nombre = 'Javier Silva'),
+    ((SELECT id_perfil FROM perfil WHERE username = 'valeriadiaz'),
     (SELECT id_resena FROM resena WHERE comentario = 'Pesima'),
     (SELECT id_contenido FROM contenido WHERE titulo = 'Joker'));

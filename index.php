@@ -30,7 +30,7 @@
       </div>
     </form>
     <div style="text-align: center;" class="register-link"> 
-      ¿No tienes una cuenta? <a href="crear_cuenta.html">Regístrate aquí</a> 
+      ¿No tienes una cuenta? <a href="paginas/crear_usuario.php">Regístrate aquí</a> 
     </div>
   </body>
 
