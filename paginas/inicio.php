@@ -1,12 +1,23 @@
 <?php
 session_start();
+require_once '../config/database.php';
 
 if (!isset($_SESSION['nombre'])) {
     header('Location: ../index.php');
     exit;
 }
 
-$username = $_SESSION['username'];
+
+$database = new Database();
+$conn = $database->connect();
+
+// Obtener todos los perfiles del usuario de la base de datos
+$stmt = $conn->prepare("SELECT username FROM perfil WHERE id_usuario = ?");
+$stmt->bindParam(1, $_SESSION['id_usuario']);
+$stmt->execute();
+$perfiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$nombre = $_SESSION['nombre'];
 ?>
 
 <!DOCTYPE html>
@@ -17,12 +28,16 @@ $username = $_SESSION['username'];
     <title>Inicio</title>
 </head>
 <body>
-    <h1>Bienvenido, <?php echo $username; ?>!</h1>
-
+    <h1>Bienvenido, <?php echo $nombre; ?>!</h1>
+    <ul>
+        <?php foreach ($perfiles as $perfil): ?>
+            <li>Nombre de Perfil: <?php echo $perfil['username']; ?></li><br>
+        <?php endforeach; ?>
+    </ul>
     <a href="crear_perfil.html">Crear Perfil</a><br><br>
     <a href="contenido.html ">Ver Contenido</a><br><br>
     <a href="agregar_contenido.html">Agregar Contenido</a><br><br>
     <a href="hacer_reseña.html">Hacer una reseña</a><br><br>
-    <a href="index.php">Regresar</a>
+    <a href="logout.php">Cerrar Sesion</a>
 </body>
 </html>
