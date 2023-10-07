@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once '../config/database.php';
+require_once '../dao/perfilDAO.php';
+require_once '../dao/perfilDAOImp.php';
 
 if (!isset($_SESSION['nombre'])) {
     header('Location: ../index.php');
@@ -9,13 +11,12 @@ if (!isset($_SESSION['nombre'])) {
 
 
 $database = new Database();
-$conn = $database->connect();
+$conexion = $database->connect();
 
 // Obtener todos los perfiles del usuario de la base de datos
-$stmt = $conn->prepare("SELECT username FROM perfil WHERE id_usuario = ?");
-$stmt->bindParam(1, $_SESSION['id_usuario']);
-$stmt->execute();
-$perfiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$perfilDAO = new perfilDAOImp($conexion);
+
+$perfiles = $perfilDAO->TodosPerfiles($_SESSION['id_usuario']);
 
 $nombre = $_SESSION['nombre'];
 ?>
@@ -28,16 +29,13 @@ $nombre = $_SESSION['nombre'];
     <title>Inicio</title>
 </head>
 <body>
-    <h1>Bienvenido, <?php echo $nombre; ?>!</h1>
+    <h1>Cuenta de <?php echo $nombre; ?>!</h1>
     <ul>
         <?php foreach ($perfiles as $perfil): ?>
-            <li>Nombre de Perfil: <?php echo $perfil['username']; ?></li><br>
+            <li>Nombre de Perfil: <a href="inicio.php"><?php echo $perfil->getUsername(); ?></a></li><br>
         <?php endforeach; ?>
     </ul>
-    <a href="crear_perfil.html">Crear Perfil</a><br><br>
-    <a href="contenido.html ">Ver Contenido</a><br><br>
-    <a href="agregar_contenido.html">Agregar Contenido</a><br><br>
-    <a href="hacer_reseña.html">Hacer una reseña</a><br><br>
+    <a href="registroPerfil.php">Crear Perfil</a><br><br>
     <a href="logout.php">Cerrar Sesion</a>
 </body>
 </html>

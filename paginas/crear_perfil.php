@@ -8,11 +8,11 @@
 <body>
     <div style="text-align: center;"><span style="font-family: Arial;">
         <h2>Crea un perfil</h2>
-        <form action="inicio.html" method="post">
+        <form action="registroPerfil.php" method="post">
             <label for="username">Username</label>
-            <input type="text" name="nombre_perfil"><br><br>
+            <input type="text" id="username" name="username"><br><br>
             <label for="edad">Edad del perfil</label>
-            <input type="text" name="edad"><br><br>
+            <input type="number" id="edad" name="edad"><br><br>
             <input type="submit" value="Crear perfil">
         </form>
     </span></div>
