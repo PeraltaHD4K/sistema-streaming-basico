@@ -1,0 +1,125 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #141414;
+    font-family: Arial, sans-serif;
+}
+  
+header {
+    background: #1b1b1b;
+    width: 100%;
+    clear: both;
+    content:'';
+    display: table;
+}
+
+h1 {
+    color: white;
+}
+
+h2 {
+    color: white;
+}
+  
+.menu {
+    width: 900px;
+    margin: 0 auto;
+}
+  
+.logo {
+      font-size: 24px;
+      margin-left: 20px;
+      color: #ffffff;
+}
+  
+nav {
+    float: right;
+}
+  
+nav ul li {
+    list-style: none;
+    margin-left: 75px;
+    padding: 12px 0;
+    float: left;
+    position: relative;
+}
+  
+nav ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+}
+  
+nav ul li a::before {
+    display: block;
+    content: '';
+    width: 0%;
+    background: #cc0606;
+    height: 5px;
+    top:0;
+    position: absolute;
+    transition: width 0.2s;
+}
+  
+nav ul li a:hover::before {
+    width: 100%;
+}
+  
+.card {
+      background-color: #222;
+      color: white;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+}
+  
+.card img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 5px;
+}
+  
+footer {
+      background-color: #1b1b1b;
+      padding: 10px 0;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+}
+
+.profile-container {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.profile-container select,
+.profile-container button {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+}
+
+.profile-container button {
+    background-color: #cc0606;
+    color: white;
+    cursor: pointer;
+}
+
+.profile-container button:hover {
+    background-color: #a80f0f;
+}

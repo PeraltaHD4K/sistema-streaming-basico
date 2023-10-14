@@ -23,11 +23,35 @@ class usuarioDAOImp implements UsuarioDAO {
         $stmt->execute();
     }
 
+    public function getUsuario($id){
+        $query = "SELECT * FROM usuario WHERE id_usuario = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $usuario = new Usuario($row['nombre'], $row['apellido_paterno'], $row['apellido_materno'], $row['correo'], $row['contrasena'], $row['id_plan']);
+        
+        return $usuario;
+    }
+    
+    public function getNumPerfiles($id_usuario){
+        $query = "SELECT * FROM perfil WHERE id_usuario = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $id_usuario);
+        $stmt->execute();
+        $cont = 0;
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $cont = $cont + 1;
+        }
+        return $cont;
+    }
+    /*
     public function __destruct() {
         // Cerrar la conexión a la base de datos al destruir el objeto
         $this->conexion->close();
-    }
-		
+    }	
+     * 
+     */	
 }
-
 ?>

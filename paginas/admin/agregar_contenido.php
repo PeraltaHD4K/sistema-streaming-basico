@@ -33,7 +33,7 @@
                 <label for="categorias">Categoria</label>
                 <select multiple name="categorias[]" required>
                     <?php foreach ($categorias as $categoria): ?>
-                        <option value="<?php echo $categoria['id_categoria']; ?>"><?php echo $categoria['nombre']; ?></option>
+                        <option value=<?php echo $categoria['id_categoria']; ?>><?php echo $categoria['nombre']; ?></option>
                     <?php endforeach; ?>
                 </select><br><br>
                 <label for="temporadas">Numero de Temporadas</label>
@@ -47,15 +47,19 @@
 
         <div class="form" id="form2">
             <h3>Agruegue una pelicula</h3>
-            <form action="inicio.html" method="post">
+            <form action="registroContenido.php" method="post">
                 <input type="hidden" name="formulario" value="pelicula">
                 <label for="titulo">Titulo</label>
                 <input type="text" name="titulo"><br><br>
                 <label for="clasificacion">Clasificacion</label>
                 <input type="text" name="clasificacion"><br><br>
                 <label for="categorias">Categoria</label>
-                <input type="text" name="categorias"><br><br>
-                <label for="duracion">Tiempo de duracion(en minutos)</label>
+                <select multiple name="categorias[]" required>
+                    <?php foreach ($categorias as $categoria): ?>
+                        <option value=<?php echo $categoria['id_categoria']; ?>><?php echo $categoria['nombre']; ?></option>
+                    <?php endforeach; ?>
+                </select><br><br>
+                <label for="duracion_mins">Tiempo de duracion(en minutos)</label>
                 <input type="number" name="duracion_mins"><br><br>
                 <input type="submit" value="Agregar Pelicula">
             </form>

@@ -25,6 +25,7 @@ class contenidoDAOImp implements ContenidoDAO {
             $stmt->execute();
         }
         
+        return $contenidoId;
     }
 	
     public function actualizarContenido(){
@@ -33,6 +34,21 @@ class contenidoDAOImp implements ContenidoDAO {
 
     public function eliminarContenido(){
 
+    }
+
+    public function getAllContenidos(){
+        $query = "SELECT * FROM contenido";
+        $stmt = $this->conexion->prepare($query);
+
+        $stmt->execute();
+        $contenidos = [];
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $contenido = new Contenido($row['titulo'], $row['tipo'], $row['clasificacion']);
+            $contenidos[] = $contenido;
+        }
+
+        return $contenidos;
     }
 }
 
