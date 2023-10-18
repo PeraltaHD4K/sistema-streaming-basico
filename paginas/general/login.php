@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config/database.php';
+require_once '../../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener datos del formulario de inicio de sesión
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$usuario){
-        header('Location: ../index.php?error=true');
+        header('Location: ../../index.php?error=true');
         exit;
     }
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['id_usuario'] = $usuario['id_usuario'];
         $_SESSION['nombre'] = $usuario['nombre'];
         $_SESSION['correo'] = $usuario['correo'];
-        header('Location: admin/inicio_admin.php');
+        header('Location: ../admin/inicio_admin.php');
         exit;
     }
 
@@ -35,11 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Las credenciales son correctas, iniciar sesión y redirigir a la página de bienvenida
             $_SESSION['id_usuario'] = $usuario['id_usuario'];
             $_SESSION['nombre'] = $usuario['nombre'];
-            header('Location: inicio.php');
+            $_SESSION['correo'] = $usuario['correo'];
+            header('Location: ../usuario/inicio.php');
             exit;
         }else{
             // Las credenciales son incorrectas, mostrar un mensaje de error
-            header('Location: ../index.php?error=true');
+            header('Location: ../../index.php?error=true');
             exit;
         }
     }
@@ -47,10 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($usuario && $contrasena === $usuario['contrasena']){
         $_SESSION['id_usuario'] = $usuario['id_usuario'];
         $_SESSION['nombre'] = $usuario['nombre'];
-        header('Location: inicio.php');
+        $_SESSION['correo'] = $usuario['correo'];
+        header('Location: ../usuario/inicio.php');
         exit;
     } else{
-        header('Location: ../index.php?error=true');
+        header('Location: ../../index.php?error=true');
         exit;
     }
 }

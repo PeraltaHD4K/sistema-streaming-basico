@@ -1,6 +1,6 @@
 <?php
 interface ContenidoDAO {
-    public function guardarContenido($titulo, $tipo, $clasificacion, $categorias);
+    public function guardarContenido($titulo, $tipo, $clasificacion, $categorias, $direccion_imagen);
     public function actualizarContenido();
     public function eliminarContenido();
     public function getAllContenidos();

@@ -16,7 +16,7 @@ CREATE TABLE usuario (
   nombre CHAR(128)  NOT NULL,
   apellido_paterno CHAR(128) NOT NULL,
   apellido_materno CHAR(128) DEFAULT NULL,
-  correo CHAR(128) NOT NULL,
+  correo CHAR(128) NOT NULL UNIQUE,
   contrasena CHAR(128) NOT NULL,
   id_plan INTEGER NOT NULL,
   PRIMARY KEY(id_usuario),
@@ -26,7 +26,7 @@ CREATE TABLE usuario (
 CREATE TABLE perfil (
     id_perfil INTEGER NOT NULL AUTO_INCREMENT,
     id_usuario INTEGER NOT NULL,
-    username CHAR(64) DEFAULT NULL,
+    username CHAR(64) DEFAULT NULL UNIQUE,
     edad SMALLINT(2) DEFAULT NULL,
     PRIMARY KEY(id_perfil),
     FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
@@ -43,6 +43,7 @@ CREATE TABLE contenido (
     titulo CHAR(255) DEFAULT NULL,
     tipo CHAR(16) DEFAULT NULL,
     clasificacion CHAR(8) DEFAULT NULL,
+    direccion_imagen VARCHAR(255),
     PRIMARY KEY(id_contenido)
 );
 
@@ -255,7 +256,7 @@ INSERT INTO detalles_plan (nombre, descripcion, precio) VALUES
 
 
 INSERT INTO usuario (nombre, apellido_paterno, apellido_materno, correo, contrasena, id_plan) VALUES
-    ('Juan', 'Gomez', 'Lopez', 'juan@gmail.com', 'juan1234', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
+    ('admin', 'admin', 'admin', 'admin@admin', 'admin', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Premium')),
     ('Andrea', 'Martinez', 'Perez', 'andrea@hotmail.com', 'andrea567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar con anuncios')),
     ('Miguel', 'Hernandez', 'Rodriguez', 'miguel@gmail.com', 'miguel890', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar')),
     ('Laura', 'Lopez', 'Fernandez', 'laura@hotmail.com', 'laura123', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),
@@ -277,7 +278,7 @@ INSERT INTO usuario (nombre, apellido_paterno, apellido_materno, correo, contras
     ('Adrian', 'Soto', 'Lopez', 'adrian@hotmail.com', 'adrian567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar'));
 
 INSERT INTO perfil (id_usuario, username, edad) VALUES 
-    ((SELECT id_usuario FROM usuario WHERE correo = 'juan@gmail.com'), 'juangomez', 28),
+    ((SELECT id_usuario FROM usuario WHERE correo = 'admin@admin'), 'admin', 22),
     ((SELECT id_usuario FROM usuario WHERE correo = 'andrea@hotmail.com'), 'andreamartinez', 25),
     ((SELECT id_usuario FROM usuario WHERE correo = 'miguel@gmail.com'), 'miguelhernandez', 29),
 	((SELECT id_usuario FROM usuario WHERE correo = 'miguel@gmail.com'), 'rodrigoperez', 18),

@@ -17,10 +17,6 @@ class peliculaDAOImp implements PeliculaDAO {
 
         $stmt->execute();
     }
-	
-    public function mostrarPeliculas(){
-
-    }
 }
 
 ?>

@@ -9,12 +9,13 @@ class contenidoDAOImp implements ContenidoDAO {
         $this->conexion = $conexion;
     }
 
-    public function guardarContenido($titulo, $tipo, $clasificacion, $categorias){
-        $query = "INSERT INTO contenido (titulo, tipo, clasificacion) VALUES (?, ?, ?)";
+    public function guardarContenido($titulo, $tipo, $clasificacion, $categorias, $direccion_imagen){
+        $query = "INSERT INTO contenido (titulo, tipo, clasificacion, direccion_imagen) VALUES (?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($query);
         $stmt->bindParam(1, $titulo);
         $stmt->bindParam(2, $tipo);
         $stmt->bindParam(3, $clasificacion);
+        $stmt->bindParam(4, $direccion_imagen);
         $stmt->execute();
 
         $contenidoId = $this->conexion->lastInsertId();
@@ -44,7 +45,7 @@ class contenidoDAOImp implements ContenidoDAO {
         $contenidos = [];
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            $contenido = new Contenido($row['titulo'], $row['tipo'], $row['clasificacion']);
+            $contenido = new Contenido($row['titulo'], $row['tipo'], $row['clasificacion'], $row['direccion_imagen']);
             $contenidos[] = $contenido;
         }
 

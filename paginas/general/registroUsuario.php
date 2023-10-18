@@ -1,7 +1,7 @@
 <?php
-require_once '../dao/usuarioDAO.php';
-require_once '../dao/usuarioDAOImp.php';
-require_once '../config/database.php';
+require_once '../../dao/usuarioDAO.php';
+require_once '../../dao/usuarioDAOImp.php';
+require_once '../../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userDao = new usuarioDAOImp($conexion);
     $userDao->guardarUsuario($nombre, $apellido_paterno, $apellido_materno, $contrasena, $correo, intval($id_plan));
 
-    header('Location: inicio.php');
+    header('Location: ../usuario/inicio.php');
     exit;
 }
 
