@@ -37,7 +37,10 @@
                     echo '<li><a href="/streaming/paginas/usuario/logout.php">Cerrar Sesion</a></li>';
                 }
                 if(isset($_SESSION['nombre']) && $_SESSION['correo'] == "admin@admin"){                    
-                    echo '<li><a href="/streaming/paginas/admin/registroContenido.php">Agregar Contenido</a></li>';  
+                    echo '<li><a href="/streaming/paginas/admin/registroContenido.php">Agregar Contenido</a></li>';
+                    echo '<li><a href="/streaming/paginas/admin/moderarContenido.php">Modificar Contenido</a></li>'; 
+                    echo '<li><a href="/streaming/paginas/admin/moderarPlanes.php">Modificar planes</a></li>';
+                    echo '<li><a href="/streaming/paginas/admin/moderarUsuarios.php">Modificar usuarios</a></li>'; 
                     echo '<li><a href="/streaming/paginas/usuario/logout.php">Cerrar Sesion</a></li>';
                 }
                 if(!isset($_SESSION['nombre'])){

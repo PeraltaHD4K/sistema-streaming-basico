@@ -51,6 +51,39 @@ class contenidoDAOImp implements ContenidoDAO {
 
         return $contenidos;
     }
+    
+    
+    public function getAllSeries(){
+        $query = "SELECT * FROM contenido";
+        $stmt = $this->conexion->prepare($query);
+
+        $stmt->execute();
+        $contenidos = [];
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            if($row['tipo'] == 'Serie'){
+                $contenido = new Contenido($row['titulo'], $row['tipo'], $row['clasificacion'], $row['direccion_imagen']);
+                $contenidos[] = $contenido;
+            }
+        }
+        return $contenidos;
+    }
+    
+     public function getAllPeliculas(){
+        $query = "SELECT * FROM contenido";
+        $stmt = $this->conexion->prepare($query);
+
+        $stmt->execute();
+        $contenidos = [];
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            if($row['tipo'] == 'Pelicula'){
+                $contenido = new Contenido($row['titulo'], $row['tipo'], $row['clasificacion'], $row['direccion_imagen']);
+                $contenidos[] = $contenido;
+            }
+        }
+        return $contenidos;
+    }
 }
 
 ?>

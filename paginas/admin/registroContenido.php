@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo = $_POST['titulo'];
     $clasificacion = $_POST['clasificacion'];
     $category = $_POST['categorias'];
+    
 
     // Manejar el archivo de imagen
     $targetDirectory = ROOT_PATH . IMAGES_CONT_PATH; // Directorio donde se almacenarán las imágenes subidas
