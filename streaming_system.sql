@@ -70,7 +70,7 @@ CREATE TABLE interaccion(
     PRIMARY KEY(id_interaccion),
     FOREIGN KEY(id_perfil) REFERENCES perfil(id_perfil) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY(id_resena) REFERENCES resena(id_resena) ON DELETE SET NULL,
-    FOREIGN KEY(id_contenido) REFERENCES contenido(id_contenido)
+    FOREIGN KEY(id_contenido) REFERENCES contenido(id_contenido) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE pelicula (
@@ -125,6 +125,8 @@ INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Dr. House', 'Serie',
 INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Breaking bad', 'Serie', 'M');
 INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Hunter x Hunter', 'Serie', 'PG-13');
 INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Whiplash', 'Pelicula', 'PG');
+INSERT INTO contenido(titulo, tipo, clasificacion, direccion_imagen) VALUES ('Anne with an E', 'Serie', 'PG', 'images/img_contenido/AnneWithAnE.jpg');
+INSERT INTO contenido(titulo, tipo, clasificacion, direccion_imagen) VALUES ('Kiki: entregas a domicilio', 'Pelicula', 'G', 'images/img_contenido/Kiki.jpg');
 
 INSERT INTO categorias_contenido (id_categoria, id_contenido) VALUES
     ((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
@@ -222,7 +224,17 @@ INSERT INTO categorias_contenido (id_categoria, id_contenido) VALUES
 	((SELECT id_categoria FROM categoria WHERE nombre = 'Anime'),
     (SELECT id_contenido FROM contenido WHERE titulo = 'Hunter x Hunter')),
     ((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
-    (SELECT id_contenido FROM contenido WHERE titulo = 'Whiplash'));
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Whiplash')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Historico'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Anne with an E')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Anne with an E')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Romantico'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Anne with an E')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Aventura'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Kiki: entregas a domicilio')),
+    ((SELECT id_categoria FROM categoria WHERE nombre = 'Anime'),
+    (SELECT id_contenido FROM contenido WHERE titulo = 'Kiki: entregas a domicilio'));
 
 
 
@@ -236,6 +248,7 @@ INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 154 FROM
 INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Terminator';
 INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 116 FROM contenido WHERE titulo = 'Back to the future';
 INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Whiplash';
+INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Kiki: entregas a domicilio';
 
 INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 6, 63 FROM contenido WHERE titulo = 'Better Call Saul';
 INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 1, 5 FROM contenido WHERE titulo = 'Chernobyl';
@@ -247,6 +260,7 @@ INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_conten
 INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 8, 177 FROM contenido WHERE titulo = 'Dr. House';
 INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 5, 62 FROM contenido WHERE titulo = 'Breaking bad';
 INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 5, 148 FROM contenido WHERE titulo = 'Hunter x Hunter';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 3, 27 FROM contenido WHERE titulo = 'Anne with an E';
 
 INSERT INTO detalles_plan (nombre, descripcion, precio) VALUES
     ('Estandar con anuncios', 'Con anuncios, todas las peliculas y series excepto unas pocas, hasta dos pantallas a la vez, FullHD', 99),
@@ -256,7 +270,7 @@ INSERT INTO detalles_plan (nombre, descripcion, precio) VALUES
 
 
 INSERT INTO usuario (nombre, apellido_paterno, apellido_materno, correo, contrasena, id_plan) VALUES
-    ('admin', 'admin', 'admin', 'admin@admin', 'admin', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Premium')),
+    ('admin', 'admin', 'admin', 'admin@admin', 'dywMNuk4Xe2LYsH', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Premium')),
     ('Andrea', 'Martinez', 'Perez', 'andrea@hotmail.com', 'andrea567', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar con anuncios')),
     ('Miguel', 'Hernandez', 'Rodriguez', 'miguel@gmail.com', 'miguel890', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Estandar')),
     ('Laura', 'Lopez', 'Fernandez', 'laura@hotmail.com', 'laura123', (SELECT id_plan FROM detalles_plan WHERE nombre = 'Basico')),

@@ -24,7 +24,7 @@
                 <?php 
                 if(isset($_SESSION['nombre']) && !isset($username) && $_SESSION['correo'] !== "admin@admin"){
                     if(isset($usuariodetalles)){
-                        if(($usuariodetalles->getIdPlan() == 3 && $usuarioDAO->getNumPerfiles($_SESSION['id_usuario']) < 2) || ($usuariodetalles->getIdPlan() == 4 && $usuarioDAO->getNumPerfiles($_SESSION['id_usuario']) < 3)){
+                        if($usuarioDAO->getNumPerfiles($_SESSION['id_usuario']) == 0 || ($usuariodetalles->getIdPlan()-1 > $usuarioDAO->getNumPerfiles($_SESSION['id_usuario']))){
                             echo '<li><a href="/streaming/paginas/usuario/registroPerfil.php">Crear Perfil</a></li>';
                         }
                     }                    

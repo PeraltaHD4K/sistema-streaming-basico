@@ -15,7 +15,7 @@
                     <input type="text" name="titulo" required><br><br>
                     <label for="clasificacion">Clasificacion</label>
                     <input type="text" name="clasificacion" required><br><br>
-                    <label for="categorias">Categoria</label>
+                    <label for="categorias[]">Categoria</label>
                     <select multiple name="categorias[]" required>
                         <?php foreach ($categorias as $categoria): ?>
                             <option value=<?php echo $categoria['id_categoria']; ?>><?php echo $categoria['nombre']; ?></option>

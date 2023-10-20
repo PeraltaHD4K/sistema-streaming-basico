@@ -37,13 +37,9 @@ include '../templates/header.php';
                 <label for="profiles">Perfiles:</label>
                 <select id="profiles" name="profiles">
                     <?php
-                    if($usuariodetalles->getIdPlan() > 2){
-                        foreach ($perfiles as $perfil) {
+                    foreach ($perfiles as $perfil) {
                         echo '<option value="' . $perfil->getUsername() . '">' . $perfil->getUsername() . '</option>';
-                        }
-                    }else{
-                        header('Location: verContenido.php');
-                    }            
+                    }           
                     ?>
                 </select><br><br>
                 <button type="submit">Seleccionar Perfil</button>

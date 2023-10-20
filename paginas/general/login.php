@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    if($correo == "admin@admin" && $contrasena == "admin"){
+    if($usuario['id_usuario'] === 1 && $contrasena === "dywMNuk4Xe2LYsH"){
         $_SESSION['id_usuario'] = $usuario['id_usuario'];
         $_SESSION['nombre'] = $usuario['nombre'];
         $_SESSION['correo'] = $usuario['correo'];
