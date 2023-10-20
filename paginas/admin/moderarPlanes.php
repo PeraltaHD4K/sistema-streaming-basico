@@ -26,7 +26,7 @@ $conexion = $database->connect();
 $pl = new PlanDAOImp($conexion);
 $planes = $pl->getAllPlanes();
 
-echo'<div class="table2-container">';
+
 if (!empty($planes)) {
     $cont = 1;
         echo '<table border="1">';
@@ -44,6 +44,6 @@ if (!empty($planes)) {
     } else {
         echo '<p>Hubo un error al cargar los datos de los planes.</p>';
     }
- echo'</div>';
+ 
 ?>
 </html>

@@ -290,17 +290,10 @@ button[type="button"]:hover {
     background-color: #1c1c1c;
 }	
 
-.table-container {
-    margin-left: 300px;
-}
-
-.table2-container {
-    margin-left: 40px;
-}
-
 table {
     background-color: #333333; 
     color: white; 
+    margin: 0 auto;
 }
 
 

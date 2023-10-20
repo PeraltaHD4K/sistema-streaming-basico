@@ -26,7 +26,7 @@ $conexion = $database->connect();
 $usu = new UsuarioDAOImp($conexion);
 $usuarios = $usu->getAllUsuarios();
 
-echo'<div class="table-container">';
+
 if (!empty($usuarios)) {
     $cont = 2;
         echo '<table border="1">';
@@ -51,6 +51,6 @@ if (!empty($usuarios)) {
     } else {
         echo '<p>Hubo un error al cargar los datos de los usuarios.</p>';
     }
- echo'</div>';
+
 ?>
 </html>
