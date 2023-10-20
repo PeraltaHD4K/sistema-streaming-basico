@@ -113,7 +113,7 @@ include '../templates/header.php'
             }
 
             if(!$resenado){
-                echo '<div class="formulario-resena">';
+                echo '<div class="formulario-modificar">';
                     echo '<h3>Escribe tu reseña</h3>';
                     echo '<form action="registroResena.php" method="post" id="reseña-form" name="crea_resena">';
                         echo '<input type="hidden" name="id_contenido" value="'.$id_contenido.'">';

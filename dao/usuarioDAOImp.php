@@ -30,9 +30,25 @@ class usuarioDAOImp implements UsuarioDAO {
         $stmt->execute();
         
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $usuario = new Usuario($row['nombre'], $row['apellido_paterno'], $row['apellido_materno'], $row['correo'], $row['contrasena'], $row['id_plan']);
+        $usuario = new Usuario($row['nombre'], $row['apellido_paterno'], $row['apellido_materno'], $row['contrasena'], $row['correo'], $row['id_plan']);
         
         return $usuario;
+    }
+    
+     public function getAllUsuarios(){
+        $query = "SELECT * FROM usuario";
+        $result = $this->conexion->prepare($query);        
+        $result->execute();
+        $usuarios = [];
+         
+        if ($result) {
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $usuario = new Usuario($row['nombre'], $row['apellido_paterno'], $row['apellido_materno'], $row['contrasena'], $row['correo'], $row['id_plan']);
+                $usuarios[] = $usuario;
+            }
+            
+        }                    
+        return $usuarios;
     }
     
     public function getNumPerfiles($id_usuario){
