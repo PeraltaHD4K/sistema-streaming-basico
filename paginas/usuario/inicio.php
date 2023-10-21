@@ -38,14 +38,15 @@ include '../templates/header.php';
             <h2>Selecciona tu perfil</h2>
             <form action="verContenido.php" method="post" name="profile-form" id="profile-form">
                 <label for="profiles">Perfiles:</label>
-                <select id="profiles" name="profiles">
-                </select><br><br>
+                <select id="profiles" name="profiles">                
                 <button type="submit">Seleccionar Perfil</button>
                     <?php
                    
                         foreach ($perfiles as $perfil) {
                         echo '<option value="' . $perfil->getUsername() . '">' . $perfil->getUsername() . '</option>';
                         }
+                echo'</select><br><br>';
+                echo'<button type="submit">Seleccionar Perfil</button>';
                     }else{
                         echo'<h1>Ingresado como cuenta administrativa</h1>';
                         echo'<h2>Seleccione una de las opciones de arriba para moderar el sistema.</h2>';

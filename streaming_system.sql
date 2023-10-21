@@ -90,43 +90,45 @@ CREATE TABLE serie (
     FOREIGN KEY(id_contenido) REFERENCES contenido(id_contenido) ON DELETE RESTRICT
 );
 
-INSERT INTO categoria(nombre) VALUES('Accion');
-INSERT INTO categoria(nombre) VALUES('Drama');
-INSERT INTO categoria(nombre) VALUES('Ciencia ficcion');
-INSERT INTO categoria(nombre) VALUES('Misterio');
-INSERT INTO categoria(nombre) VALUES('Comedia');
-INSERT INTO categoria(nombre) VALUES('Historico');
-INSERT INTO categoria(nombre) VALUES('Crimen');
-INSERT INTO categoria(nombre) VALUES('Medico');
-INSERT INTO categoria(nombre) VALUES('Romantico');
-INSERT INTO categoria(nombre) VALUES('Melodrama');
-INSERT INTO categoria(nombre) VALUES('Aventura');
-INSERT INTO categoria(nombre) VALUES('Tragedia');
-INSERT INTO categoria(nombre) VALUES('Terror');
-INSERT INTO categoria(nombre) VALUES('Anime');
+INSERT INTO categoria(nombre) VALUES
+	('Accion'),
+	('Drama'),
+	('Ciencia ficcion'),
+	('Misterio'),
+	('Comedia'),
+	('Historico'),
+	('Crimen'),
+	('Medico'),
+	('Romantico'),
+	('Melodrama'),
+	('Aventura'),
+	('Tragedia'),
+	('Terror'),
+	('Anime');
 
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Titanic', 'Pelicula', 'PG-13');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Matrix', 'Pelicula', 'M');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Interstellar', 'Pelicula', 'PG-13');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Better call Saul', 'Serie', 'M');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Chernobyl', 'Serie', 'M');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Game of Thrones', 'Serie', 'Ao');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Stranger Things', 'Serie', 'T'); 
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('The Office', 'Serie', 'PG-13');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Oppenheimer', 'Pelicula', 'Ao');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Wall-e', 'Pelicula', 'E');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Friends', 'Serie', 'T');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Black mirror', 'Serie', 'M');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Joker', 'Pelicula', 'M');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Pulp fiction', 'Pelicula', 'Ao');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Terminator', 'Pelicula', 'T');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Back to the future', 'Pelicula', 'E');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Dr. House', 'Serie', 'T');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Breaking bad', 'Serie', 'M');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Hunter x Hunter', 'Serie', 'PG-13');
-INSERT INTO contenido(titulo, tipo, clasificacion) VALUES ('Whiplash', 'Pelicula', 'PG');
-INSERT INTO contenido(titulo, tipo, clasificacion, direccion_imagen) VALUES ('Anne with an E', 'Serie', 'PG', 'images/img_contenido/AnneWithAnE.jpg');
-INSERT INTO contenido(titulo, tipo, clasificacion, direccion_imagen) VALUES ('Kiki: entregas a domicilio', 'Pelicula', 'G', 'images/img_contenido/Kiki.jpg');
+INSERT INTO contenido(titulo, tipo, clasificacion, direccion_imagen) VALUES 
+	('Titanic', 'Pelicula', 'PG-13', 'images/img_contenido/Titanic.jpg'),
+	('Matrix', 'Pelicula', 'M', 'images/img_contenido/Matrix.jpg'),
+	('Interstellar', 'Pelicula', 'PG-13', 'images/img_contenido/Interstellar.jpg'),
+	('Better call Saul', 'Serie', 'M', 'images/img_contenido/Better Call Saul.jpg'),
+	('Chernobyl', 'Serie', 'M', 'images/img_contenido/Chernobyl.jpg'),
+	('Game of Thrones', 'Serie', 'Ao', 'images/img_contenido/Game of Thrones.jpg'),
+	('Stranger Things', 'Serie', 'T', 'images/img_contenido/Stranger Things.jpg'), 
+	('The Office', 'Serie', 'PG-13', 'images/img_contenido/The Office.jpg'),
+	('Oppenheimer', 'Pelicula', 'Ao', 'images/img_contenido/Oppenheimer.jpg'),
+	('Wall-e', 'Pelicula', 'E', 'images/img_contenido/WALL-E.jpg'),
+	('Friends', 'Serie', 'T', 'images/img_contenido/Friends.jpg'),
+	('Black mirror', 'Serie', 'M', 'images/img_contenido/Black Mirror.jpg'),
+	('Joker', 'Pelicula', 'M', 'images/img_contenido/Joker.jpg'),
+	('Pulp fiction', 'Pelicula', 'Ao', 'images/img_contenido/Pulp Fiction.jpg'),
+	('Terminator', 'Pelicula', 'T', 'images/img_contenido/Terminator.jpg'),
+	('Back to the future', 'Pelicula', 'E', 'images/img_contenido/Back to the Future.jpg'),
+	('Dr. House', 'Serie', 'T', 'images/img_contenido/Dr house.jpg'),
+	('Breaking bad', 'Serie', 'M', 'images/img_contenido/Breaking Bad.jpg'),
+	('Hunter x Hunter', 'Serie', 'PG-13', 'images/img_contenido/Hunter x Hunter.jpg'),
+	('Whiplash', 'Pelicula', 'PG', 'images/img_contenido/Whiplash.jpg'),
+	('Anne with an E', 'Serie', 'PG', 'images/img_contenido/AnneWithAnE.jpg'),
+	('Kiki: entregas a domicilio', 'Pelicula', 'G', 'images/img_contenido/Kiki.jpg');
 
 INSERT INTO categorias_contenido (id_categoria, id_contenido) VALUES
     ((SELECT id_categoria FROM categoria WHERE nombre = 'Drama'),
@@ -237,30 +239,33 @@ INSERT INTO categorias_contenido (id_categoria, id_contenido) VALUES
     (SELECT id_contenido FROM contenido WHERE titulo = 'Kiki: entregas a domicilio'));
 
 
+INSERT INTO pelicula (id_contenido, duracion_mins) VALUES 
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Titanic'), 194),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Matrix'), 136),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Interstellar'), 169),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Oppenheimer'), 180),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Wall-e'), 98),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Joker'), 122),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Pulp Fiction'), 154),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Terminator'), 107),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Back to the future'), 116),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Whiplash'), 107),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Kiki: entregas a domicilio'), 107);
 
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 194 FROM contenido WHERE titulo = 'Titanic';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 136 FROM contenido WHERE titulo = 'Matrix';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 169 FROM contenido WHERE titulo = 'Interstellar';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 180 FROM contenido WHERE titulo = 'Oppenheimer';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 98 FROM contenido WHERE titulo = 'Wall-e';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 122 FROM contenido WHERE titulo = 'Joker';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 154 FROM contenido WHERE titulo = 'Pulp Fiction';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Terminator';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 116 FROM contenido WHERE titulo = 'Back to the future';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Whiplash';
-INSERT INTO pelicula (id_contenido, duracion_mins) SELECT id_contenido, 107 FROM contenido WHERE titulo = 'Kiki: entregas a domicilio';
 
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 6, 63 FROM contenido WHERE titulo = 'Better Call Saul';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 1, 5 FROM contenido WHERE titulo = 'Chernobyl';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 8, 73 FROM contenido WHERE titulo = 'Game of Thrones';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 4, 34 FROM contenido WHERE titulo = 'Stranger Things';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 9, 201 FROM contenido WHERE titulo = 'The Office';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 10, 236 FROM contenido WHERE titulo = 'Friends';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 6, 27 FROM contenido WHERE titulo = 'Black mirror';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 8, 177 FROM contenido WHERE titulo = 'Dr. House';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 5, 62 FROM contenido WHERE titulo = 'Breaking bad';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 5, 148 FROM contenido WHERE titulo = 'Hunter x Hunter';
-INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) SELECT id_contenido, 3, 27 FROM contenido WHERE titulo = 'Anne with an E';
+INSERT INTO serie (id_contenido, num_temporadas, num_capitulos) VALUES
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Better Call Saul'), 6, 63),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Chernobyl'), 1, 5),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Game of Thrones'), 8, 73),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Stranger Things'), 4, 34),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'The Office'), 9, 201),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Friends'), 10, 236),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Black mirror'), 6, 27),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Dr. House'), 8, 177),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Breaking bad'), 5, 62),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Hunter x Hunter'), 5, 148),
+	((SELECT id_contenido FROM contenido WHERE titulo = 'Anne with an E'), 3, 27);
+
 
 INSERT INTO detalles_plan (nombre, descripcion, precio) VALUES
     ('Estandar con anuncios', 'Con anuncios, todas las peliculas y series excepto unas pocas, hasta dos pantallas a la vez, FullHD', 99),

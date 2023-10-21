@@ -62,12 +62,5 @@ class usuarioDAOImp implements UsuarioDAO {
         }
         return $cont;
     }
-    /*
-    public function __destruct() {
-        // Cerrar la conexión a la base de datos al destruir el objeto
-        $this->conexion->close();
-    }	
-     * 
-     */	
 }
 ?>

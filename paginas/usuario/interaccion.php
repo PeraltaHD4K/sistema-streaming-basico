@@ -2,6 +2,8 @@
 session_start();
 include_once ($_SERVER['DOCUMENT_ROOT'].'/streaming/config/rutas.php');
 require_once '../../config/database.php';
+require_once '../../dao/contenido.php';
+require_once '../../dao/contenidoDAOImp.php';
 
 if (!isset($_SESSION['nombre'])) {
     header('Location: ../../index.php');
@@ -20,6 +22,7 @@ if (!isset($_GET['titulo'])){
 
 $database = new Database();
 $conexion = $database->connect();
+$cont = new ContenidoDAOImp($conexion);
 $id_contenido;
 $id_perfil;
 
@@ -71,13 +74,14 @@ include '../templates/header.php'
 ?>
     <div class="container">
         <div class="pelicula-info">
-            <?php 
+            <?php            
             if ($info_pelicula->rowCount() > 0){
-                while($row = $info_pelicula->fetch(PDO::FETCH_ASSOC)){                    
+                while($row = $info_pelicula->fetch(PDO::FETCH_ASSOC)){    
                     echo '<h1>'.$row["titulo"].'</h1>';
                     echo '<p>'.$row["tipo"];
                     echo ' Clasificacion: '.$row["clasificacion"];
                     echo ' Duracion: '.$row["duracion_mins"].' mins</p>';
+                    echo '<p>Categorias: '.$cont->getAllCategorias($row["titulo"]).'.</p><br>';
                     echo '<img src="'.PROJECT_PATH.$row["direccion_imagen"].'" alt="'.$row["titulo"].'">';
                 }
             }elseif ($info_serie->rowCount() > 0) {
@@ -87,6 +91,7 @@ include '../templates/header.php'
                     echo ' Clasificacion: '.$row["clasificacion"];
                     echo ' Temporadas: '.$row["num_temporadas"];
                     echo ' Capitulos: '.$row["num_capitulos"].'</p>';
+                    echo '<p>Categorias: '.$cont->getAllCategorias($row["titulo"]).'.</p><br>';
                     echo '<img src="'.PROJECT_PATH.$row["direccion_imagen"].'" alt="'.$row["titulo"].'">';
                 }
             }

@@ -2,8 +2,12 @@
 session_start();
 include_once ($_SERVER['DOCUMENT_ROOT'].'/streaming/config/rutas.php');
 require_once '../../config/database.php';
+require_once '../../dao/contenido.php';
+require_once '../../dao/contenidoDAOImp.php';
+
  $database = new Database();
  $conexion = $database->connect();
+ $cont = new ContenidoDAOImp($conexion);
  $stmt = $conexion->prepare("SELECT id_categoria, nombre FROM categoria");
  $stmt->execute();
  $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -86,6 +90,7 @@ include '../templates/header.php'
                     echo '<p>Pelicula';
                     echo ' Clasificacion: '.$clasificacionpeli;
                     echo ' Duracion: '.$duracionpeli.' mins</p>';
+                    echo '<p>Categorias: '.$cont->getAllCategorias($titulopeli).'.</p><br>';
                     echo '<img src="'.PROJECT_PATH.$imagenpeli.'" alt="'.$titulopeli.'">';
                 
             }elseif ($info_serie->rowCount() > 0) {
@@ -95,6 +100,7 @@ include '../templates/header.php'
                     echo ' Clasificacion: '.$clasificacionserie;
                     echo ' Temporadas: '.$temporadasserie;
                     echo ' Capitulos: '.$capitulosserie.'</p>';
+                    echo '<p>Categorias: '.$cont->getAllCategorias($tituloserie).'.</p><br>';
                     echo '<img src="'.PROJECT_PATH.$imagenserie.'" alt="'.$tituloserie.'">';
                 
             }
@@ -147,7 +153,7 @@ include '../templates/header.php'
                     
                     <label for="imagen">Cambiar portada:</label>
                     <input type="file" id="imagen" name="imagen" accept="image/*"><br><br>
-                    <button type="button" class="eliminar-button" onclick="confirmarEliminacion()">ELIMINAR SERIE</button>
+                    <button type="button" class="eliminar-button" onclick="confirmarEliminacion()">ELIMINAR CONTENIDO</button>
                     <?php
                         echo '<button type="submit">Modificar contenido</button>';
                     echo '</form>';
