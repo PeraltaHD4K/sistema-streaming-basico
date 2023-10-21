@@ -4,5 +4,7 @@ interface ContenidoDAO {
     public function actualizarContenido();
     public function eliminarContenido();
     public function getAllContenidos();
+    public function getAllSeries();
+    public function getAllPeliculas();
 }
 ?>

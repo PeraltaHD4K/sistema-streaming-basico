@@ -1,6 +1,7 @@
 <?php
 require_once('contenidoDAO.php');
 require_once("contenido.php");
+require_once("categoriaDAOImp.php");
 
 class contenidoDAOImp implements ContenidoDAO {
     private $conexion;
@@ -83,6 +84,22 @@ class contenidoDAOImp implements ContenidoDAO {
             }
         }
         return $contenidos;
+    }
+    
+    public function getAllCategorias($titulo){
+        $query = "SELECT id_contenido FROM contenido WHERE titulo = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $titulo);
+        $stmt->execute();
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $id_contenido = $row["id_contenido"];
+        }
+        
+        $consultaCategorias = new categoriaDAOImp($this->conexion);
+        $lista = $consultaCategorias->getCategorias($id_contenido);
+        $stringCategorias = implode(", ",$lista);
+        
+        return $stringCategorias;
     }
 }
 

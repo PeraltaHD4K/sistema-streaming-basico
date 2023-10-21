@@ -18,10 +18,6 @@ class serieDAOImp implements SerieDAO {
 
         $stmt->execute();
     }
-	
-    public function mostrarSeries(){
-
-    }
 }
 
 ?>
