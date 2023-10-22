@@ -17,6 +17,24 @@ class peliculaDAOImp implements PeliculaDAO {
 
         $stmt->execute();
     }
+
+    public function actualizarPelicula($id_contenido, $duracion_mins){
+        $query = "UPDATE pelicula SET duracion_mins = ? 
+        WHERE id_contenido = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $duracion_mins);
+        $stmt->bindParam(2, $id_contenido);
+        $stmt->execute();
+    }
+    
+
+    public function eliminarPelicula($id_contenido){
+        $query = "DELETE FROM pelicula WHERE id_contenido = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $id_contenido);
+
+        $stmt->execute();
+    }
 }
 
 ?>

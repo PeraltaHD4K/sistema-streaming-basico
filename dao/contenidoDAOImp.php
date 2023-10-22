@@ -30,12 +30,35 @@ class contenidoDAOImp implements ContenidoDAO {
         return $contenidoId;
     }
 	
-    public function actualizarContenido(){
+    public function actualizarContenido($id_contenido, $titulo, $clasificacion, $categorias, $direccion_imagen){
+        $query = "UPDATE contenido SET titulo = ?, clasificacion = ?, direccion_imagen = ? 
+                WHERE id_contenido = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $titulo);
+        $stmt->bindParam(2, $clasificacion);
+        $stmt->bindParam(3, $direccion_imagen);
+        $stmt->bindParam(4, $id_contenido);
+        $stmt->execute();
+        
+        $query = "DELETE FROM categorias_contenido WHERE id_contenido = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $id_contenido);
+        $stmt->execute();
 
+        foreach ($categorias as $categoriaId) {
+            $stmt = $this->conexion->prepare("INSERT INTO categorias_contenido (id_categoria, id_contenido) VALUES (?, ?)");
+            $stmt->bindParam(1, $categoriaId);
+            $stmt->bindParam(2, $id_contenido);
+            $stmt->execute();
+        }
     }
 
-    public function eliminarContenido(){
+    public function eliminarContenido($id_contenido){
+        $query = "DELETE FROM contenido WHERE id_contenido = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $id_contenido);
 
+        $stmt->execute();
     }
 
     public function getAllContenidos(){

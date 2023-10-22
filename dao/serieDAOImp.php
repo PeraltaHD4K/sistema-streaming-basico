@@ -18,6 +18,25 @@ class serieDAOImp implements SerieDAO {
 
         $stmt->execute();
     }
+
+    public function actualizarSerie($id_contenido, $num_temporadas, $num_capitulos){
+        $query = "UPDATE serie SET num_temporadas = ?, num_capitulos = ? 
+        WHERE id_contenido = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $num_temporadas);
+        $stmt->bindParam(2, $num_capitulos);
+        $stmt->bindParam(3, $id_contenido);
+        $stmt->execute();
+    }
+    
+
+    public function eliminarSerie($id_contenido){
+        $query = "DELETE FROM serie WHERE id_contenido = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(1, $id_contenido);
+
+        $stmt->execute();
+    }
 }
 
 ?>

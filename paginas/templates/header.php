@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $title;?></title>
+    
     <style>        
         .form {
             color: white;
@@ -15,6 +16,7 @@
         }
     </style>
     <link rel="stylesheet" href="/streaming/css/styles.css">
+    
 </head>
 <body>
     <header>
@@ -38,7 +40,8 @@
                 }
                 if(isset($_SESSION['nombre']) && $_SESSION['correo'] == "admin@admin"){                    
                     echo '<li><a href="/streaming/paginas/admin/registroContenido.php">Agregar Contenido</a></li>';
-                    echo '<li><a href="/streaming/paginas/admin/moderarContenido.php">Modificar Contenido</a></li>'; 
+                    echo '<li><a href="/streaming/paginas/admin/editar_peliculas.php">Editar Peliculas</a></li>';
+                    echo '<li><a href="/streaming/paginas/admin/editar_series.php">Editar Series</a></li>'; 
                     echo '<li><a href="/streaming/paginas/admin/moderarPlanes.php">Modificar planes</a></li>';
                     echo '<li><a href="/streaming/paginas/admin/moderarUsuarios.php">Modificar usuarios</a></li>'; 
                     echo '<li><a href="/streaming/paginas/usuario/logout.php">Cerrar Sesion</a></li>';

@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $serieDAO = new serieDAOImp($conexion);
             $serieDAO->guardarSerie($lastContenidoId, $num_temporadas, $num_capitulos);
 
-            echo "Película registrada con éxito.";
+            echo "Serie registrada con éxito.";
             header('Location: inicio_admin.php');
             exit;                
         } else {
