@@ -131,7 +131,7 @@ include '../templates/header.php'
                 echo '<input type="number"  name="num_temporadas" value="' . $temporadasserie . '" required><br><br>';
                 echo '<label for="capitulos">Numero de Capitulos: </label>';
                 echo '<input type="number" name="num_capitulos" value="' . $capitulosserie . '" required><br><br>';
-                echo $imagenserie.'<br><br>';
+                echo '<input type="hidden" name="imagen_ruta" value ="'.$imagenserie.'"><br><br>';
         } else {
             echo '<input type="hidden" name="tipo" value="'.$tipo.'">';
             echo '<label for="titulo">Titulo: </label>';
@@ -147,7 +147,7 @@ include '../templates/header.php'
                     echo '</select><br><br>';
                     echo '<label for="duracion_mins">Tiempo de duracion(en minutos): </label>';
                     echo '<input type="number" name="duracion_mins" value="' . $duracionpeli . '"><br><br>';
-                    echo $imagenpeli.'<br><br>';
+                    echo '<input type="hidden" name="imagen_ruta" value ="'.$imagenpeli.'"><br><br>';
         }
         ?>                
         <label for="imagen">Cambiar portada:</label>
