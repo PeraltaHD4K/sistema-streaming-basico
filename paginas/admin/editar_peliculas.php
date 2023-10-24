@@ -33,7 +33,7 @@ $pagina = (isset($_GET['page'])) ? $_GET['page'] : 1;
 // Obtiene el número de enlaces o establece el valor predeterminado en 5
 $enlaces = (isset($_GET['enlaces'])) ? $_GET['enlaces'] : 5;
 
-// Consulta SQL para obtener datos de la tabla 'libros'
+// Consulta SQL para obtener datos de las tablas 'contenidos', 'pelicula', 'categoria'
 $consulta = "SELECT pelicula.id_pelicula, contenido.id_contenido, contenido.titulo, contenido.tipo, contenido.clasificacion, contenido.direccion_imagen, 
 GROUP_CONCAT(categoria.nombre) AS nombres_categorias, pelicula.duracion_mins 
 FROM contenido 
@@ -97,7 +97,7 @@ include '../templates/header.php';
                         </tbody>
                     </table>
                     <button type="submit" name="editar" value="editar">Editar</button>
-                    <button type="submit" name="eliminar" value="eliminar">Eliminar</button>
+                    <button type="submit" name="eliminar" value="eliminar" onclick="marcarEliminar()">Eliminar</button>
                 </form>
                 <!-- Muestra los enlaces de paginación al final de la página -->
                 <ul class="pagination">
@@ -106,24 +106,20 @@ include '../templates/header.php';
             </div>
         </div>
         <script>
-            function confirmarEliminacion() {
-                // Verifica si el botón de eliminar está presente en el formulario
-                var botonEliminar = document.querySelector('button[name="eliminar"]');
-                
-                // Si el botón de eliminar está presente y ha sido clickeado, muestra la ventana de confirmación
-                if (botonEliminar && botonEliminar.clicked) {
+            var eliminarClickeado = false;
+
+            function marcarEliminar() {
+                eliminarClickeado = true;
+            }
+
+            function confirmarEliminacion() {                
+                // Si el botón de eliminar ha sido clickeado, muestra la ventana de confirmación
+                if (eliminarClickeado) {
+                    eliminarClickeado = false;
                     return confirm("�Desea borrar este contenido del sistema?");
                 }
                 // Si el botón de eliminar no ha sido clickeado, permite enviar el formulario sin confirmación
                 return true;
-            }
-
-            // Agrega un evento clic al botón de eliminar para marcarlo como clickeado
-            var botonEliminar = document.querySelector('button[name="eliminar"]');
-            if (botonEliminar) {
-                botonEliminar.addEventListener('click', function() {
-                    this.clicked = true;
-                });
             }
         </script>
 </body>

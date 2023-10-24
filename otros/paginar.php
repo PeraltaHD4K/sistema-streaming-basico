@@ -35,14 +35,25 @@
                 $this->pagina = $this->pagina - 1;
             }
 
-            // Construye la nueva consulta con límite y realiza la consulta
-            $consultar = $this->consulta.' limit '.$inicio.','.$this->limite;
-            $respuesta = $this->conexion->query($consultar);   
+            if($this->total < $this->limite){
+                $consultar = $this->consulta;
+                $respuesta = $this->conexion->query($consultar); 
+            }else{
+                // Construye la nueva consulta con límite y realiza la consulta
+                $consultar = $this->consulta.' LIMIT '.$inicio.','.$this->limite;
+                $respuesta = $this->conexion->query($consultar);
+            }
 
             // Almacena los resultados en un array asociativo
-            while($row = $respuesta->fetch(PDO::FETCH_ASSOC)) 
-                $resultados[]  = $row;
-                
+            $resultados = array(); // Inicializa $resultados como un array vacío
+
+            // Verifica si hay resultados antes de iniciar el bucle
+            if ($respuesta) {
+                while($row = $respuesta->fetch(PDO::FETCH_ASSOC)) {
+                    $resultados[]  = $row;
+                }
+            }
+                    
             // Crea un objeto estándar con la información paginada
             $result = new stdclass();
             $result->pagina = $this->pagina;

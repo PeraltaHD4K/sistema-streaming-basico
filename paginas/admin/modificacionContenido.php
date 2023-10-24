@@ -110,7 +110,7 @@ include '../templates/header.php'
     <div class="resenas">
         <?php
         echo '<div class="formulario-resena">';
-        echo '<form action="editarContenido.php?id_contenido='.$id_contenido.'." method="post" id="reseña-form" name="crea_resena" enctype="multipart/form-data">';
+        echo '<form action="editarContenido.php?id_contenido='.$id_contenido.'." method="post"  enctype="multipart/form-data">';
         echo '<input type="hidden" name="id_contenido" value="' . $id_contenido . '">';
         if ($info_serie->rowCount() > 0) {
             echo '<input type="hidden" name="tipo" value="'.$tipo.'">';
@@ -159,8 +159,8 @@ include '../templates/header.php'
         ?>
 
         <script>
-            function confirmarEliminacion() {
-                const confirmacion = confirm("�Borrar este contenido del sistema?");
+            function confirmarModificacion() {
+                const confirmacion = confirm("�Desea modificar este contenido del sistema?");
                 if (confirmacion) {
                     window.location.href = 'moderarContenido.php';
                 }

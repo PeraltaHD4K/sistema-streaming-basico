@@ -40,7 +40,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $peliculaDAO = new peliculaDAOImp($conexion);
             $peliculaDAO->actualizarPelicula($id_contenido, $duracion_mins);
             echo "Película actualizada con éxito.";
-            //header('Location: inicio_admin.php');
+            header('Location: modificacionContenido.php?id_contenido='.$id_contenido);
             exit;
         }
 
@@ -92,7 +92,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $peliculaDAO = new peliculaDAOImp($conexion);
             $peliculaDAO->actualizarPelicula($id_contenido, $duracion_mins);
             echo "Película actualizada con éxito.";
-            //header('Location: inicio_admin.php');
+            header('Location: modificacionContenido.php?id_contenido='.$id_contenido);
             exit;
         }
 
